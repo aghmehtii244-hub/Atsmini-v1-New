@@ -1,0 +1,21 @@
+name: Build ATS Mini V1
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check Python
+        run: python3 --version
+      - name: Install PlatformIO
+        run: python3 -m pip install --break-system-packages --upgrade platformio
+      - name: Build firmware
+        run: pio run
+      - name: Upload firmware
+        uses: actions/upload-artifact@v5
+        with:
+          name: firmware
+          path: .pio/build/esp32-s3-ots/firmware.bin
+          if-no-files-found: error
